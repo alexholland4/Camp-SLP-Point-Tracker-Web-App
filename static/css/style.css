@@ -1,0 +1,130 @@
+body {
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+    background: linear-gradient(to bottom, #87CEEB, #FAF0E6);
+    color: #333;
+    text-align: center;
+    padding: 20px;
+    margin: 0;
+}
+
+.header {
+    background: #3E5C2A;
+    color: #FFFAF0;
+    padding: 20px;
+    border-radius: 15px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.header h1 {
+    font-size: 3em;
+    margin: 0;
+}
+
+.header .tagline {
+    font-size: 1.2em;
+    color: #FFD700;
+    font-style: italic;
+    margin-top: 5px;
+}
+
+#team-scores, #event-feed, #add-points-form {
+    background: #FFFAF0;
+    border-radius: 10px;
+    padding: 15px;
+    margin: 10px auto;
+    width: 80%;
+    max-width: 500px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.team {
+    font-size: 1.8em;
+    margin: 5px 0;
+    padding: 10px;
+    border-radius: 5px;
+    color: #333;
+}
+
+#feed-list {
+    list-style-type: none;
+    padding: 0;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+#feed-list li {
+    margin: 8px 0;
+    padding: 10px;
+    background: #f2f2f2;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Color coding for each team */
+#feed-list li.green {
+    background: rgba(0, 128, 0, 0.2);
+    color: #006400;
+}
+
+#feed-list li.purple {
+    background: rgba(128, 0, 128, 0.2);
+    color: #800080;
+}
+
+#feed-list li.pink {
+    background: rgba(255, 192, 203, 0.3);
+    color: #FF1493;
+}
+
+#feed-list li.blue {
+    background: rgba(0, 191, 255, 0.2);
+    color: #1E90FF;
+}
+
+#add-points-form h3 {
+    font-size: 1.5em;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+#add-points-form label, #add-points-form input, #add-points-form select {
+    font-size: 1.1em;
+    margin-top: 5px;
+}
+
+button[type="submit"] {
+    background-color: #FFD700;
+    color: #333;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1.2em;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button[type="submit"]:hover {
+    background-color: #FF6347;
+}
+
+/* Team score color schemes */
+#Green {
+    background: rgba(0, 128, 0, 0.2);
+    color: #006400;
+}
+
+#Purple {
+    background: rgba(128, 0, 128, 0.2);
+    color: #800080;
+}
+
+#Pink {
+    background: rgba(255, 192, 203, 0.3);
+    color: #FF1493;
+}
+
+#Blue {
+    background: rgba(0, 191, 255, 0.2);
+    color: #1E90FF;
+}
