@@ -52,14 +52,14 @@
     <script>
         const initialData = {{ data | tojson }};
         
-        // Function to update feed with color and timestamp, limiting to 5 events
+        // Function to update the feed with color and timestamp, limiting to 5 events
         function updateFeed(entry) {
             const feedList = document.getElementById('feed-list');
             const listItem = document.createElement('li');
             
             // Apply color based on team
             listItem.classList.add(entry['Team Name'].toLowerCase());
-
+    
             // Display team, individual, event, points, and timestamp
             listItem.textContent = `[${entry['Timestamp']}] ${entry['Team Name']} - ${entry['Individual Name'] || 'Team'}: ${entry['Event Name']} (+${entry['Points']})`;
             
@@ -71,7 +71,19 @@
                 feedList.removeChild(feedList.lastChild);
             }
         }
-
+    
+        // Function to update team scores display in sorted order
+        function updateTeamScoresDisplay() {
+            const teamScoresContainer = document.getElementById('team-scores');
+            const teams = Array.from(document.querySelectorAll('.team'));
+    
+            // Sort teams by score in descending order
+            teams.sort((a, b) => parseInt(b.querySelector('.score').textContent) - parseInt(a.querySelector('.score').textContent));
+    
+            // Re-append each team element to the container in the sorted order
+            teams.forEach(team => teamScoresContainer.appendChild(team));
+        }
+    
         // Load initial data on page load
         function loadInitialData() {
             const scores = { Green: 0, Purple: 0, Pink: 0, Blue: 0 };
@@ -80,31 +92,35 @@
                 const team = entry['Team Name'];
                 const points = entry['Points'];
                 scores[team] += points;
-
+    
                 updateFeed(entry);
             });
-
+    
             Object.keys(scores).forEach(team => {
                 const scoreElement = document.querySelector(`#${team} .score`);
                 scoreElement.textContent = scores[team];
             });
+    
+            // Sort and update team scores on initial load
+            updateTeamScoresDisplay();
         }
-
+    
         document.addEventListener('DOMContentLoaded', function() {
             loadInitialData();
-
+    
             const socket = io.connect('http://localhost:5000');
-
+    
             // Real-time update for new events
             socket.on('new_event', function(event) {
                 updateScore(event);
                 updateFeed(event);
+                updateTeamScoresDisplay();
             });
-
+    
             const form = document.getElementById('points-form');
             form.addEventListener('submit', function(e) {
                 e.preventDefault();
-
+    
                 const formData = new FormData(form);
                 
                 fetch('/update_points', {
@@ -114,7 +130,7 @@
                 .then(response => {
                     if (response.ok) {
                         form.reset(); // Reset form after submission
-
+    
                         // Prepare new entry from form data to instantly update the score
                         const event = {
                             'Team Name': formData.get('team'),
@@ -123,10 +139,11 @@
                             'Points': parseInt(formData.get('points')),
                             'Timestamp': new Date().toISOString().slice(0, 19).replace('T', ' ')
                         };
-
-                        // Immediately update score and event feed
+    
+                        // Immediately update score, event feed, and team score order
                         updateScore(event);
                         updateFeed(event);
+                        updateTeamScoresDisplay();
                         
                     } else {
                         console.error("Failed to update points.");
@@ -135,16 +152,17 @@
                 .catch(error => console.error('Error:', error));
             });
         });
-
-// Helper function to update the score display
-function updateScore(event) {
-    const teamScore = document.querySelector(`#${event['Team Name']} .score`);
-    if (teamScore) {
-        const currentScore = parseInt(teamScore.textContent);
-        teamScore.textContent = currentScore + event['Points'];
-    }
-}
-
+    
+        // Helper function to update the score display and call display update
+        function updateScore(event) {
+            const teamScore = document.querySelector(`#${event['Team Name']} .score`);
+            if (teamScore) {
+                const currentScore = parseInt(teamScore.textContent);
+                teamScore.textContent = currentScore + event['Points'];
+            }
+            updateTeamScoresDisplay();
+        }
     </script>
+    
 </body>
 </html>
